@@ -4,7 +4,7 @@
   "description": "Wrapper around the official Dropbox JavaScript SDK, inspired by fs-extra",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,12 @@
   },
   "homepage": "https://github.com/davidmerfield/dropbox-extra#readme",
   "dependencies": {
+    "async": "^2.6.1",
     "debug": "^3.1.0",
-    "dropbox": "^4.0.5"
+    "dropbox": "^4.0.5",
+    "isomorphic-fetch": "^2.2.1"
+  },
+  "devDependencies": {
+    "jasmine": "^3.1.0"
   }
 }
