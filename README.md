@@ -4,13 +4,19 @@ Wrapper around the official Dropbox JavaScript SDK, inspired by fs-extra. It han
 npm install dropbox-extra -save
 ```
 
-Then use it like this:
+You'll need to acquire an ```ACCESS_TOKEN``` from the user. Then you can initialize a ```db``` client like this:
 
 ```javascript
-var Dropbox = require('dropbox-extra');
-var dropbox = new Dropbox(ACCESS_TOKEN);
-  
-dropbox.writeFile('/test.txt', 'Hello world', function(err){
+var dropbox = require('dropbox-extra');
+var db = new dropbox(ACCESS_TOKEN);
+```
 
-});
+#### API
+
+##### writeFile
+
+Behaves like fs.writeFile.
+
+```
+db.writeFile('/test.txt', 'Hello world', function(err){});
 ```
