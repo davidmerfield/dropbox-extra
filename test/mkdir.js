@@ -9,27 +9,10 @@ describe("dropbox-extra", function(){
 
     // Reset the folder state before running each test
     beforeEach(function (done) {
-
       debug('resetting folder state');
-
-      dropbox.readdir('/', function(err, contents){
-
-        if (err) throw err;
-          
-        async.forEachOf(contents, function(item, key, next){
-
-          debug('removing', item);
-          dropbox.remove(item, next);
-
-        }, function(err){
-
-          if (err) throw err;
-
-          debug('reset folder state successfully!');
-          done();
-        });      
-      });
+      dropbox.emptyDir('/', done);
     });
+
 
     it("makes a directory", function(done) {
 

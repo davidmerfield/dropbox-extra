@@ -1,5 +1,5 @@
 var debug = require('debug')('remove');
-var normalizePath = require('../util/normalizePath');
+var normalizePath = require('./normalizePath');
 
 module.exports = function (client) {
 

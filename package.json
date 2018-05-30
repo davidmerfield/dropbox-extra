@@ -23,6 +23,7 @@
     "async": "^2.6.1",
     "debug": "^3.1.0",
     "dropbox": "^4.0.5",
+    "dropbox-stream": "^2.0.0",
     "isomorphic-fetch": "^2.2.1"
   },
   "devDependencies": {

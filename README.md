@@ -6,11 +6,12 @@ Planned features:
 - Offers handy ```upload``` and ```download``` methods which use Streams!
 - Offers handy ```sync``` methods to synchronize a local folder with one in Dropbox
 - Lets you interact with the root directory as if it were another folder, e.g. ```emptyDir('/')``` will remove all the files in the user's Dropbox.
-- ```remove``` won't throw an error
+- ```remove``` won't throw an error when the file doesn't exist, etc...
 
 See also:
+- [dropbox](https://github.com/dropbox/dropbox-sdk-js)
 - [dropbox-fs](https://github.com/sallar/dropbox-fs)
-- [dropbox]()
+- [dropbox-stream](https://github.com/velocityzen/dropbox-stream)
 
 ### Getting started
 

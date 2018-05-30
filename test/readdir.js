@@ -1,5 +1,6 @@
 var debug = require('debug')('readdir');
-var normalizePath = require('../util/normalizePath');
+var errorHandler = require('./errorHandler');
+var normalizePath = require('./normalizePath');
 
 module.exports = function (client) {
 
@@ -21,10 +22,10 @@ module.exports = function (client) {
       // Results will include entries under mounted folders 
       // which includes app folder, shared folder and team folder.
       include_mounted_folders: true,
-
+      
     };
 
-    var handleErr = function(err, retry){
+    var handleErr = errorHandler(function(err, retry){
 
       if (retry) {
 
@@ -36,7 +37,7 @@ module.exports = function (client) {
         debug(err);
         callback(err);
       }
-    };
+    });
 
     client.filesListFolder(arg).then(function handleList (res){
 
