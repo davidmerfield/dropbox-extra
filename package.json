@@ -4,7 +4,7 @@
   "description": "Wrapper around the official Dropbox JavaScript SDK, inspired by fs-extra",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "node test"
   },
   "repository": {
     "type": "git",
