@@ -3,11 +3,18 @@ An unfinished, unofficial wrapper around the [Dropbox JavaScript SDK](https://gi
 ***
 
 Required API:
-- mkdir (with option to resolve issue with existing folder)
+<detail>
+<summary>
+- [x] emptyDir 
+</summary>
+  - [x] support root directory
+  - [ ] test with full folder access
+</detail>
+- [x] mkdir (with option to resolve issue with existing folder)
 - readdir
 - remove
 - move (with support to move root contents into subdirectory)
-- emptyDir (with support for root directory)
+
 - upload (with support for uploading entire folder, or sync?)
 - stat (with support to stat a folder and return list of entries)
 - sync (with cursor support)
