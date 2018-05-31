@@ -3,13 +3,13 @@ An unfinished, unofficial wrapper around the [Dropbox JavaScript SDK](https://gi
 ***
 
 Required API:
-<detail>
+<details>
 <summary>
 - [x] emptyDir 
 </summary>
   - [x] support root directory
   - [ ] test with full folder access
-</detail>
+</details>
 - [x] mkdir (with option to resolve issue with existing folder)
 - readdir
 - remove
