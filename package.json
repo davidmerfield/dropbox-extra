@@ -24,6 +24,8 @@
     "debug": "^3.1.0",
     "dropbox": "^4.0.5",
     "dropbox-stream": "^2.0.0",
+    "fs-extra": "^3.0.1",
+    "got": "^8.3.1",
     "isomorphic-fetch": "^2.2.1"
   },
   "devDependencies": {
