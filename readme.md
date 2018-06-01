@@ -3,13 +3,14 @@ An unfinished, unofficial wrapper around the [Dropbox JavaScript SDK](https://gi
 ***
 
 Required API:
-<details>
-<summary>
-- [x] emptyDir 
-</summary>
+
+- [x] emptyDir
   - [x] support root directory
   - [ ] test with full folder access
-</details>
+- [ ] mkDir
+  - [ ] resolve
+  - [ ] test with full folder access
+
 - [x] mkdir (with option to resolve issue with existing folder)
 - readdir
 - remove
@@ -22,6 +23,8 @@ Required API:
 ***
 
 Planned features:
+- It would be nice to take advantage of Dropbox's batch methods, which allows you to group multiple operations under a single job. However, at the moment, I don't really need this and it complicates things. I think there should be different methods, e.g. mkdirs for multiple new directories? Batch jobs do not appear to be atomic - ie some of the parts of a job can fail and some can succeed. It doesn't seem like there's much real benefit to using them unless you're moving large numbers of files?
+
 - Work out how to be sensible about case-sensitivty. I think I was cavalier using path_display instead of path_lower. Need to run tests in case-sensitive environment if possible.
 - Support for promises and callbacks (https://github.com/RyanZim/universalify)
 - Offer toggle for dry-run (i.e. don't modify the user's folder in any way)
