@@ -1,4 +1,4 @@
-An unfinished, unofficial wrapper around the [Dropbox JavaScript SDK](https://github.com/dropbox/dropbox-sdk-js), inspired by [fs-extra](https://github.com/jprichardson/node-fs-extra). 
+An unfinished, unofficial wrapper around the [Dropbox JavaScript SDK](https://github.com/dropbox/dropbox-sdk-js), inspired by [fs-extra](https://github.com/jprichardson/node-fs-extra) focused on node.js. I have no intentions of supporting browser-based usage.
 
 ***
 
