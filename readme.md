@@ -15,8 +15,7 @@ Required API:
 - readdir
 - remove
 - move (with support to move root contents into subdirectory)
-
-- upload (with support for uploading entire folder, or sync?)
+- upload
 - stat (with support to stat a folder and return list of entries)
 - sync (with cursor support)
 
