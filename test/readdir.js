@@ -1,64 +1,108 @@
-var debug = require('debug')('readdir');
-var errorHandler = require('./errorHandler');
-var normalizePath = require('./normalizePath');
+var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
+var dropbox = require('../lib')(accessToken);
+var resetDataFolder = require('./resetDataFolder');
+var resetDropboxFolder = require('./resetDropboxFolder');
+var async = require('async');
+var fs = require('fs-extra');
 
-module.exports = function (client) {
+describe("readdir", function() {
 
-  debug('Initialized');
+  // Ensure the test account's Dropbox folder
+  // is empty before running each test.
+  beforeEach(resetDropboxFolder(dropbox));
+  beforeEach(resetDataFolder);
 
-  return function (path, callback) {
-    
-    path = normalizePath(path);
-    debug(path);
+var originalTimeout;
 
-    var contents = [];
-    var arg = {
+  afterEach(function(){
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+  });
 
-      path: path,
-      recursive: false,
-      include_media_info: false,
-      include_deleted: false,
 
-      // Results will include entries under mounted folders 
-      // which includes app folder, shared folder and team folder.
-      include_mounted_folders: true,
-      
-    };
+  // Reset the folder state before running each test
+  beforeEach(function (done) {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+  });
 
-    var handleErr = errorHandler(function(err, retry){
 
-      if (retry) {
+  it("reads the root folder", function(done) {
 
-        debug(err);
-        callback(err);
+    async.parallel([
+      dropbox.writeFile.bind(this, '/1.txt', 'Bar'),
+      dropbox.writeFile.bind(this, '/2.txt', 'Baz'),
+      dropbox.writeFile.bind(this, '/3.txt', 'Bat'),
+    ], function(err, status){
 
-      } else {
+      expect(err).toBe(null);
 
-        debug(err);
-        callback(err);
-      }
+      dropbox.readdir('/', function(err, contents){
+
+        expect(err).toBe(null);
+        expect(contents.sort()).toEqual(['1.txt', '2.txt', '3.txt'].sort());
+
+        done();
+      });
     });
+  });
 
-    client.filesListFolder(arg).then(function handleList (res){
+  it("reads a huge folder", function(done) {
 
-      debug(res);
+    var tasks = [], name, contents;
 
-      contents = contents.concat(res.entries.map(function(item){
-        return item.name;
-      }));
+    while (tasks.length < 100) { 
+      contents = tasks.length + ' task!';
+      name = tasks.length + '.txt';
+      fs.outputFileSync(__dirname + '/data/' + name, contents);
+      tasks.push(dropbox.writeFile.bind(this, name, contents));
+    }
 
-      if (res.has_more) {
-        
-        client.filesListFolderContinue({cursor: res.cursor})
-          .then(handleList)
-          .catch(handleErr);
+    async.parallelLimit(tasks, 10, function(err, status){
 
-      } else {
+      expect(err).toBe(null);
+      expect(status).toEqual(tasks.map(function(){return true;}));
 
-        debug(contents);
-        callback(null, contents);
-      }
-    })
-    .catch(handleErr);
-  };
-};
+      dropbox.readdir('', function(err, contents){
+
+        expect(err).toBe(null);
+
+        fs.readdir(__dirname + '/data', function(err, localContents){
+
+          expect(err).toBe(null);
+          expect(contents.sort()).toEqual(localContents.sort());
+          done();
+        });
+      });
+    });
+  });
+  it("reads a sub folder", function(done) {
+
+    async.parallel([
+      dropbox.writeFile.bind(this, '/a/1.txt', 'Bar'),
+      dropbox.writeFile.bind(this, '/a/2.txt', 'Baz'),
+      dropbox.writeFile.bind(this, '/b/3.txt', 'Bat'),
+    ], function(err, status){
+
+      expect(err).toBe(null);
+
+      dropbox.readdir('/a', function(err, contents){
+
+        expect(err).toBe(null);
+        expect(contents.sort()).toEqual(['1.txt', '2.txt'].sort());
+
+        done();
+      });
+    });
+  });
+
+  it("reads an empty folder", function(done) {
+
+    dropbox.readdir('/', function(err, contents){
+
+      expect(err).toBe(null);
+      expect(contents).toEqual([]);
+
+      done();
+    });
+  });
+});
