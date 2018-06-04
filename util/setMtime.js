@@ -18,5 +18,10 @@ module.exports = function(path, modified, callback) {
     return callback(ERR + modified);
   }
 
-  fs.utimes(path, mtime, mtime, callback);
+  fs.utimes(path, mtime, mtime, function(err){
+
+    if (err) return callback(err);
+
+    return callback(null);
+  });
 };
