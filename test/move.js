@@ -1,6 +1,6 @@
 var debug = require('debug')('move.test');
 var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
-var dropbox = require('./index')(accessToken);
+var dropbox = require('../lib')(accessToken);
 
 describe("dropbox-extra", function(){
 

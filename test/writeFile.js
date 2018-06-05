@@ -11,15 +11,12 @@ describe("writeFile", function() {
 
   it("does not overwrite a folder", function(done) {
 
-    dropbox.mkdir('/test.txt', function(err, status){
+    dropbox.mkdir('/will-be-directory.txt', function(err, status){
 
       expect(err).toBe(null);
       expect(status).toBe(true);
 
-      dropbox.writeFile('/test.txt', 'Foo', function(err, status){
-
-        console.log(err);
-        console.log(err.code);
+      dropbox.writeFile('/will-be-directory.txt', 'Foo', function(err, status){
 
         expect(err === null).toBe(false);
         expect(status).toBe(false);
@@ -30,22 +27,24 @@ describe("writeFile", function() {
 
   it("writes a file", function(done) {
 
-    dropbox.writeFile('/test.txt', 'Foo', function(err, status){
+    dropbox.writeFile('/hello-world.txt', 'Hey', function(err, status){
 
       expect(err).toBe(null);
       expect(status).toBe(true);
 
-      dropbox.readFile('/test.txt', 'utf-8', function(err, contents){
+      dropbox.readFile('/hello-world.txt', 'utf-8', function(err, contents){
 
         expect(err).toBe(null);
-        expect(contents).toEqual('Foo');
+        expect(contents).toEqual('Hey');
 
         done();
       });
     });
   });
 
-  xit("tolerates mass writes a file", function(done) {
+  it("tolerates mass writes a file", function(done) {
+
+    var tasks = [];
 
     function write (cb) {
 
@@ -64,13 +63,9 @@ describe("writeFile", function() {
       });
     }
 
-    var tasks = [];
+    while (tasks.length < 10) tasks.push(write);
 
-    while (tasks.length < 10) {
-      tasks.push(write);
-    }
-
-    async.parallel(tasks, function(err, results){
+    async.parallelLimit(tasks, 10, function(err){
 
       expect(err).toBe(null);
       done();
