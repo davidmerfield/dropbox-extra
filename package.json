@@ -1,6 +1,6 @@
 {
   "name": "dropbox-extra",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Wrapper around the official Dropbox JavaScript SDK, inspired by fs-extra",
   "main": "lib/index.js",
   "scripts": {
