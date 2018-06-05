@@ -13,8 +13,8 @@ describe("readdir", function() {
   // is empty before running each test.
   beforeEach(resetDropboxFolder(dropbox));
   beforeEach(resetDataFolder);
-  beforeEach(timeout.extend);
-  afterEach(timeout.reset);
+  // beforeEach(timeout.extend);
+  // afterEach(timeout.reset);
 
   it("reads the root folder", function(done) {
 
@@ -29,7 +29,9 @@ describe("readdir", function() {
       dropbox.readdir('/', function(err, contents){
 
         expect(err).toBe(null);
-        expect(contents.sort()).toEqual(['1.txt', '2.txt', '3.txt'].sort());
+        expect(!!contents).toBe(true);
+        
+        if (contents) expect(contents.sort()).toEqual(['1.txt', '2.txt', '3.txt'].sort());
 
         done();
       });
@@ -84,7 +86,9 @@ describe("readdir", function() {
       dropbox.readdir('/a', function(err, contents){
 
         expect(err).toBe(null);
-        expect(contents.sort()).toEqual(['1.txt'].sort());
+        expect(contents === undefined).toBe(false);
+        
+        if (contents) expect(contents.sort()).toEqual(['1.txt'].sort());
 
         done();
       });

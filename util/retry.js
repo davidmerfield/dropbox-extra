@@ -35,14 +35,15 @@ module.exports = function (options) {
 
       var delay;
 
-      if (err.retry_after) {
-        delay = err.retry_after * 1000;        
+      
+      if (err.error && err.error.error && err.error.error.retry_after) {
+        delay = err.error.error.retry_after * 1000;        
       } else {
         delay = interval + (jitter * Math.random());
       }
 
       debug('waiting', delay, 'ms');
-      
+
       retries++;
       setTimeout(then, delay);
     }
