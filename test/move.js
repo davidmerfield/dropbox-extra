@@ -87,12 +87,12 @@ describe("dropbox-extra", function(){
           dropbox.readdir('/', function(err, contents){
 
             expect(err).toBe(null);
-            expect(contents).toEqual(['bar.txt']);
+            expect(contents.sort()).toEqual(['foo', 'bar.txt'].sort());
 
-            dropbox.readdir('/bar', function(err, contents){
+            dropbox.readdir('/foo', function(err, contents){
 
               expect(err).toBe(null);
-              expect(contents).toEqual(['foo.txt']);
+              expect(contents).toEqual([]);
 
               done();
             });

@@ -3,15 +3,18 @@ var dropbox = require('../lib')(accessToken);
 var resetDropboxFolder = require('./resetDropboxFolder');
 var resetDataFolder = require('./resetDataFolder');
 var fs = require('fs-extra');
+var timeout = require('./timeout')(jasmine, 60*1000*5); // 5 min
 
-describe("emptyDir", function() {
+describe("sync", function() {
 
   // Ensure the test account's Dropbox folder
   // is empty before running each test.
   beforeEach(resetDropboxFolder(dropbox));
   beforeEach(resetDataFolder);
+  beforeEach(timeout.extend);
+  afterEach(timeout.reset);
 
-  it("syncs a folder", function(done){
+  xit("syncs a folder", function(done){
 
     var dataFolder = __dirname + '/data';
 
