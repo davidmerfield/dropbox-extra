@@ -128,3 +128,38 @@ Behaves like fs.writeFile.
 ```
 dropbox.writeFile('/test.txt', 'Hello world', function(err){});
 ```
+
+### Grievances
+
+1. Client methods have unexpected side-effects
+
+The Dropbox cli modifies the object passed to a method. When you pass in arg to a method like this:
+
+```javascript
+client.method(arg).then(..).catch(..);
+```
+
+Arg is set to undefined, so you cannot re-use it. I was reusing arg when retrying methods which result in retryable errors.
+
+---
+
+2. Promises
+
+I wanted to implement some retry logic in my error handler, like I needed to do for this library. You might consider something like:
+
+```
+client.method(arg).then(function(){..}).catch(function(err){
+  
+  if (retry(err)) {
+    ...
+
+  } else {
+
+    callback(err);
+}
+
+});
+```
+
+What do you expect to happen? You'll see the error and the process will die.
+What actually happens? The error is swallowed silently.
