@@ -163,3 +163,9 @@ client.method(arg).then(function(){..}).catch(function(err){
 
 What do you expect to happen? You'll see the error and the process will die.
 What actually happens? The error is swallowed silently.
+
+3. Strange delays
+
+There seems to be a strange issue with filesListFolder when after writing lots of files to the root directory calling filesListFolder doesn't seem to return. I need to implement some sort of timeout feature to make sure that the callback actually gets called. Otherwise it might choke up things....
+
+https://www.dropboxforum.com/t5/API-Support-Feedback/Slow-response-from-list-folder/td-p/217063
