@@ -1,65 +1,50 @@
-var RETRY_CODES = [0, 500, 504, // network error
-    429, 503];     // rate limit error
-
 var debug = require('debug')('dropbox-extra:retry');
 
-var MAX_RETRIES = 10;
+var RETRY_CODES = [0, 500, 504, // network error
+    429, 503];     // rate limit error
 
 // 100-200ms between requests
 var INTERVAL = 100;
 var JITTER = 100;
 
-module.exports = function (method, args) {
+// Max retries
+var LIMIT = 10;
+
+module.exports = function (options) {
 
   debug('Initializing retry');
 
+  options = options || {};
+
   var retries = 0;
+  var interval = options.interval || INTERVAL;
+  var jitter = options.jitter || JITTER;
+  var limit = options.limit || LIMIT;
 
-  return function (callback) {
+  return {
     
-    return function handle (err) {
+    maxed: function(){
+      return retries >= limit;
+    },
 
-      if (!err) return callback();
-
-      debug('Invoked', err);
+    cannot: function(err) {
+      return RETRY_CODES.indexOf(err.status) === -1;
+    },
+    
+    wait: function (err, then) {
 
       var delay;
 
-      if (RETRY_CODES.indexOf(err.status) === -1) {
-
-        // log all errors hererto see if they can be retried
-        debug('Not a known err code');
-        debug(err);
-        return callback(err);
-      }
-      
-      if (retries >= MAX_RETRIES) {
-        debug('Maxed out retries');
-        debug(err);
-        return callback(err);
-      }
-
-      retries++;
-
-      // retry_after is in seconds so we multiply by 1000
-      // to get the milliseconds used by setTimeout
-      // https://dropbox.github.io/dropbox-sdk-js/global.html#AuthRateLimitError__anchor
       if (err.retry_after) {
-        delay = err.retry_after * 1000; 
+        delay = err.retry_after * 1000;        
       } else {
-        delay = retries * INTERVAL + (Math.random() * JITTER);
+        delay = interval + (jitter * Math.random());
       }
 
-      debug('Retrying....'. delay);
+      debug('waiting', delay, 'ms');
       
-      setTimeout(function(){
-
-        args[args.length - 1] = handle;
-        
-        debug('REtrying now!');
-        method.apply(this, args);
-
-      }, delay);
-    };
+      retries++;
+      setTimeout(then, delay);
+    }
   };
 };
