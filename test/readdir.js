@@ -11,7 +11,7 @@ describe("readdir", function() {
 
   // Ensure the test account's Dropbox folder
   // is empty before running each test.
-  beforeEach(resetDropboxFolder(dropbox));
+  beforeEach(resetDropboxFolder);
   beforeEach(resetDataFolder);
   // beforeEach(timeout.extend);
   // afterEach(timeout.reset);

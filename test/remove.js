@@ -8,7 +8,7 @@ describe("dropbox-extra", function(){
   describe("remove", function() {
   
     // Reset the folder state before running each test
-    beforeEach(resetDropboxFolder(dropbox));
+    beforeEach(resetDropboxFolder);
 
 
   it("should require a callback function", function(){

@@ -7,7 +7,7 @@ describe("writeFile", function() {
 
   // Ensure the test account's Dropbox folder
   // is empty before running each test.
-  beforeEach(resetDropboxFolder(dropbox));
+  beforeEach(resetDropboxFolder);
 
   it("does not overwrite a folder", function(done) {
 

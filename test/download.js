@@ -8,7 +8,7 @@ describe("download", function() {
 
     // Ensure the test account's Dropbox folder
   // is empty before running each test.
-  beforeEach(resetDropboxFolder(dropbox));
+  beforeEach(resetDropboxFolder);
   beforeEach(resetDataFolder);
 
   it("downloads a file", function(done){

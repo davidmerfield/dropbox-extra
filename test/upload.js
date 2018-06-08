@@ -8,7 +8,7 @@ describe("download", function() {
 
     // Ensure the test account's Dropbox folder
   // is empty before running each test.
-  beforeEach(resetDropboxFolder(dropbox));
+  beforeEach(resetDropboxFolder);
   beforeEach(resetDataFolder);
 
   it("uploads a file", function(done){
@@ -30,39 +30,6 @@ describe("download", function() {
         expect(result).toEqual(contents);
         done();
       });
-    });
-  });
-});
-
-
-resetDropboxFolder(dropbox)(function(err){
-
-  if (err) throw err;
-
-  var testDirectory = __dirname + '/data';
-  var testFilePath = testDirectory + '/test.txt';
-  var testFilePathResult = testDirectory + '/test-result.txt';
-
-  var testContents = Date.now() + '';
-  
-  var dropboxPath = '/test.txt';
-
-  fs.emptyDirSync(testDirectory);
-  fs.writeFileSync(testFilePath, testContents);
-
-  debug('Reset folder');
-
-  dropbox.upload(testFilePath, dropboxPath, function(err){
-
-    if (err) throw err;
-  
-    debug('Wrote files');
-  
-    dropbox.download(dropboxPath, testFilePathResult, function(err){
-      
-      if (err) throw err;
-  
-      debug('Downloaded?');
     });
   });
 });
