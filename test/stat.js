@@ -8,10 +8,40 @@ describe("stat", function() {
 
   // Ensure the test account's Dropbox folder
   // is empty before running each test.
-  beforeEach(resetDropboxFolder(dropbox));
+  beforeEach(resetDropboxFolder);
   beforeEach(resetDataFolder);
 
-  it("gets a files stat", function(done) {
+  it("returns an error for a path to nothing", function(done) {
+
+    dropbox.stat('/nemo', function(err, stat){
+
+      expect(stat).toBe(null);
+      expect(err).not.toBe(null);
+      expect(err.code).toBe('ENOENT');
+      done(); 
+    });
+  });
+
+  it("gets a folder's stat", function(done) {
+
+    dropbox.mkdir('/another', function(err, status){
+
+      expect(err).toBe(null);
+      expect(status).toBe(true);
+
+      dropbox.stat('/another', function(err, stat){
+
+        expect(err).toBe(null);
+        expect(stat.isDirectory()).toBe(true);
+        expect(stat.isFile()).toBe(false);
+        expect(stat.name).toBe('another');
+        
+        done(); 
+      });
+    });
+  });
+
+  it("gets a file's stat", function(done) {
 
     dropbox.writeFile('/test.txt', 'Foo', function(err, status){
 
