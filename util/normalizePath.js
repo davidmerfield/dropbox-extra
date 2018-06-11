@@ -1,5 +1,9 @@
+var validatePath = require('./validatePath');
+
 module.exports = function (path) {
   
+  validatePath(path);
+
   // Root should be blank?
   if (path === '/') {
     path = "";

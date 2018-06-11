@@ -1,4 +1,5 @@
 var DEFAULT_LENGTH = 60 * 1000; // 60s
+var validateCallback = require('./validateCallback');
 
 // This function is to add a timeout around 
 // requests to Dropbox's API, which sometimes
@@ -9,6 +10,8 @@ module.exports = function (callback, len) {
   var err;
   var called;
   var timeout;
+
+  validateCallback(callback);
 
   timeout = setTimeout(function(){
 
