@@ -1,4 +1,3 @@
-var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
-var dropbox = require('../lib')(accessToken);
+var dropbox = global.dropbox;
 
 module.exports = dropbox.emptyDir.bind(this, '/');

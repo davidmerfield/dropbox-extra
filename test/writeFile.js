@@ -1,20 +1,16 @@
-var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
-var dropbox = require('../lib')(accessToken);
-var resetDropboxFolder = require('./resetDropboxFolder');
-var debug = require('debug')('dropbox-extra:test:writeFile');
+var dropbox = global.dropbox;
 var async = require('async');
-describe("writeFile", function() {
 
-  // Ensure the test account's Dropbox folder
-  // is empty before running each test.
-  beforeEach(resetDropboxFolder);
+describe("writeFile", function() {
 
   it("does not overwrite a folder", function(done) {
 
     dropbox.mkdir('/will-be-directory.txt', function(err, status){
 
       expect(err).toBe(null);
-      expect(status).toBe(true);
+      expect(status).toEqual(jasmine.any(Object));
+      expect(status.id).toEqual(jasmine.any(String));
+      expect(status.path_display).toEqual(jasmine.any(String));
 
       dropbox.writeFile('/will-be-directory.txt', 'Foo', function(err, status){
 

@@ -1,15 +1,7 @@
-var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
-var dropbox = require('../lib')(accessToken);
-var resetDropboxFolder = require('./resetDropboxFolder');
-var resetDataFolder = require('./resetDataFolder');
+var dropbox = global.dropbox;
 var fs = require('fs-extra');
 
 describe("download", function() {
-
-    // Ensure the test account's Dropbox folder
-  // is empty before running each test.
-  beforeEach(resetDropboxFolder);
-  beforeEach(resetDataFolder);
 
   it("uploads a file", function(done){
 

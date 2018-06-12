@@ -1,14 +1,6 @@
-var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
-var dropbox = require('../lib')(accessToken);
-var resetDropboxFolder = require('./resetDropboxFolder');
+var dropbox = global.dropbox;
 
 describe("emptyDir", function() {
-
-
-  // Ensure the test account's Dropbox folder
-  // is empty before running each test.
-  beforeEach(resetDropboxFolder);
-
 
   // Do some basic check of the callback argument
   it("requires a callback function", function(){
@@ -89,7 +81,9 @@ describe("emptyDir", function() {
       // We should have modified the folder
       // so status should be true
       expect(err).toBe(null);
-      expect(status).toBe(true);
+      expect(status).toEqual(jasmine.any(Object));
+      expect(status.id).toEqual(jasmine.any(String));
+      expect(status.path_display).toEqual(jasmine.any(String));
 
       // Now we verify that emptyDir creates the 
       // directory, its parents, and that it is empty

@@ -1,17 +1,8 @@
-var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
-var dropbox = require('../lib')(accessToken);
-var resetDropboxFolder = require('./resetDropboxFolder');
+var dropbox = global.dropbox;
 var async = require('async');
-var timeout = require('./timeout')(jasmine);
 
 describe("readFile", function() {
 
-  // Ensure the test account's Dropbox folder
-  // is empty before running each test.
-  beforeEach(resetDropboxFolder);
-  beforeEach(timeout.extend);
-  afterEach(timeout.reset);
-  
   it("reads a file", function(done) {
 
     dropbox.writeFile('/test.txt', 'Foo', function(err, status){
@@ -59,5 +50,5 @@ describe("readFile", function() {
         done();
       });
     });
-  });
+  }, 20000);
 });

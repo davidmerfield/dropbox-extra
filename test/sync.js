@@ -9,13 +9,8 @@ error:
 
 */ 
 
-var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
-var lib = require('../lib');
-var dropbox = lib(accessToken);
-var resetDropboxFolder = require('./resetDropboxFolder');
-var resetDataFolder = require('./resetDataFolder');
+var dropbox = global.dropbox;
 var fs = require('fs-extra');
-var timeout = require('./timeout')(jasmine, 60*1000*5); // 5 min
 var dataFolder = __dirname + '/data';
 var join = require('path').join;
 var checkSync = require('./checkSync');
@@ -24,15 +19,11 @@ describe("sync", function() {
 
   // Ensure the test account's Dropbox folder
   // is empty before running each test.
-
   describe("in root of Dropbox", main('/'));
   describe("in a subfolder of Dropbox", main('/a/b/c'));
   
   function main (dropboxFolder) { return function () {
 
-    beforeEach(resetDropboxFolder);
-    beforeEach(resetDataFolder);
-      
     // if running the tests inside a subdirectory, ensure it exists
     beforeEach(function(done){
 
@@ -41,8 +32,6 @@ describe("sync", function() {
       dropbox.emptyDir(dropboxFolder, done);
     });
 
-    beforeEach(timeout.extend);
-    afterEach(timeout.reset);
     beforeEach(console.log);
     afterEach(console.log);
 
@@ -217,11 +206,9 @@ describe("sync", function() {
           });
         });
       });
-    });
+    }, 20000);
 
     it("will not redownload a file which matches", function(done){
-
-      dropbox = lib(accessToken);
 
       dropbox.writeFile(join(dropboxFolder, 'rabbit.txt'), 'hare', function(err){
 
@@ -256,9 +243,8 @@ describe("sync", function() {
           });
         });
       });
-    });
-  };}
+    }, 20000);
 
-  
-
+  };
+}
 });

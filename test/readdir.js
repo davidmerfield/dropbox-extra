@@ -1,20 +1,8 @@
-var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
-var dropbox = require('../lib')(accessToken);
-var resetDataFolder = require('./resetDataFolder');
-var resetDropboxFolder = require('./resetDropboxFolder');
+var dropbox = global.dropbox;
 var async = require('async');
 var fs = require('fs-extra');
-var timeout = require('./timeout')(jasmine, 60*1000*5); // 5 min
-
 
 describe("readdir", function() {
-
-  // Ensure the test account's Dropbox folder
-  // is empty before running each test.
-  beforeEach(resetDropboxFolder);
-  beforeEach(resetDataFolder);
-  // beforeEach(timeout.extend);
-  // afterEach(timeout.reset);
 
   it("reads the root folder", function(done) {
 
@@ -22,7 +10,7 @@ describe("readdir", function() {
       dropbox.writeFile.bind(this, '/1.txt', 'Bar'),
       dropbox.writeFile.bind(this, '/2.txt', 'Baz'),
       dropbox.writeFile.bind(this, '/3.txt', 'Bat'),
-    ], function(err, status){
+    ], function(err){
 
       expect(err).toBe(null);
 
@@ -75,11 +63,11 @@ describe("readdir", function() {
         });
       });
     });
-  });
+  }, 60*1000*5);
   
   it("reads a sub folder", function(done) {
 
-    dropbox.writeFile('/a/1.txt', 'foo', function(err, status){
+    dropbox.writeFile('/a/1.txt', 'foo', function(err){
       
       expect(err).toBe(null);
 

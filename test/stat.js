@@ -1,15 +1,7 @@
-var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
-var dropbox = require('../lib')(accessToken);
-var resetDropboxFolder = require('./resetDropboxFolder');
-var resetDataFolder = require('./resetDataFolder');
+var dropbox = global.dropbox;
 var fs = require('fs');
 
 describe("stat", function() {
-
-  // Ensure the test account's Dropbox folder
-  // is empty before running each test.
-  beforeEach(resetDropboxFolder);
-  beforeEach(resetDataFolder);
 
   it("returns an error for a path to nothing", function(done) {
 
@@ -27,7 +19,9 @@ describe("stat", function() {
     dropbox.mkdir('/another', function(err, status){
 
       expect(err).toBe(null);
-      expect(status).toBe(true);
+      expect(status).toEqual(jasmine.any(Object));
+      expect(status.id).toEqual(jasmine.any(String));
+      expect(status.path_display).toEqual(jasmine.any(String));
 
       dropbox.stat('/another', function(err, stat){
 

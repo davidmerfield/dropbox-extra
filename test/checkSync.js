@@ -1,5 +1,4 @@
-var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
-var dropbox = require('../lib')(accessToken);
+var dropbox = global.dropbox;
 var join = require('path').join;
 var async = require('async');
 var debug = require('debug')('dropbox-extra:tests:checkSync');
