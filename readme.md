@@ -3,22 +3,13 @@ An unfinished, unofficial wrapper around the [Dropbox JavaScript SDK](https://gi
 ***
 
 Required API:
+- add revoke (revoke access token)
+- add account (get account info)
+- add token
+- add authenticationUrl
 
-- [x] emptyDir
-  - [x] support root directory
-  - [ ] test with full folder access
-- [ ] mkDir
-  - [ ] resolve
-  - [ ] test with full folder access
-
-- [x] mkdir (with option to resolve issue with existing folder)
-- readdir
-- remove
-- move (with support to move root contents into subdirectory)
-- upload
-- stat (with support to stat a folder and return list of entries)
-- sync (with cursor support)
-
+- sync needs events
+- sync needs to work from local to dropbox (both ways)
 ***
 
 Planned features:
