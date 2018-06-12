@@ -2,14 +2,14 @@ var debug = require('debug')('emptyDir.test');
 var accessToken = process.env.DROPBOX_TEST_ACCESS_TOKEN;
 var dropbox = require('../lib')(accessToken);
 var resetDropboxFolder = require('./resetDropboxFolder');
+var timeout = require('./timeout')(jasmine, 60*1000*5); // 5 min
 
-describe("dropbox-extra", function(){
+describe("remove", function(){
 
-  describe("remove", function() {
-  
-    // Reset the folder state before running each test
-    beforeEach(resetDropboxFolder);
-
+  // Reset the folder state before running each test
+  beforeEach(resetDropboxFolder);
+  beforeEach(timeout.extend);
+  afterEach(timeout.reset);
 
   it("should require a callback function", function(){
 
@@ -124,5 +124,4 @@ describe("dropbox-extra", function(){
       });
     });
   });
-});
 });

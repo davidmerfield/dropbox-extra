@@ -1,14 +1,14 @@
-function (client, method, callback){
+module.exports = function (client, method){
 
   return function (callback) {
 
-    function check () {
+    function check (async_job_id) {
 
       client[method + 'Check']({
 
-        async_job_id: res.async_job_id
+        async_job_id: async_job_id
 
-      }).then(function(){
+      }).then(function(res){
 
         if (res['.tag'] === 'complete') {
 
@@ -20,7 +20,7 @@ function (client, method, callback){
 
         } else if (res['.tag'] === 'in_progress') {
 
-           checkUntil(client, async_job_id, callback);
+           check(async_job_id);
         
         } else {
 
@@ -34,12 +34,12 @@ function (client, method, callback){
 
       if (res['.tag'] === 'async_job_id') {
 
-        check();
+        check(res.async_job_id);
 
       } else {
 
+        callback(new Error('Unexpected response'));
       }
-
-    }         
+    };       
   };
-}
+};

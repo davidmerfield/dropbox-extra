@@ -29,14 +29,10 @@ module.exports = function (callback, len) {
 
   return function callbackWithTimeout () {
 
-    console.log('Invoked');
-
     if (called) {
-      console.log('cant call');
       return;
     }
 
-    console.log('Calling callback');
     callback.apply(this, arguments);
     clearTimeout(timeout);
     called = true;

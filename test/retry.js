@@ -142,41 +142,5 @@ describe("retry", function() {
       invoked.errHandler++;
       retry();
     });
-
-  });
-
-  fit("should only allow the callback called once", function(done){
-
-    var invoked = {callback: 0, main: 0, errHandler: 0};
-
-    function callback () {
-      
-      invoked.callback++;
-
-      expect(invoked.main).toBe(1);
-      expect(invoked.callback).toBe(1);
-      expect(invoked.errHandler).toBe(0);
-
-      done();
-    }
-
-    retry(callback, function (){
-      
-      invoked.main++;
-      
-      callback(); callback();
-  
-      setTimeout(function(){
-
-        callback(); callback();
-
-      }, 10);
-
-    }, function(){
-      
-      invoked.errHandler++;
-      callback(); 
-    });
-
   });
 });

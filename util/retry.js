@@ -5,6 +5,8 @@ var RETRY_CODES = [
   
   0, 500, 504, // network error
 
+  443, // ENOTFOUND?
+
   429, 503 // rate limit error
 ]; 
 
@@ -60,7 +62,16 @@ module.exports = function retry (callback, main, handleErr, options) {
     
     // We know this err is retryable immediately
     if (RETRY_CODES.indexOf(err.status) !== -1) {
+
       debug(err.status + 'is retryable');
+
+      // I want to target the ENOTFOUND error more
+      // specifically than it is now.
+      if (err.status === 443) {
+        console.log('443 ENOTFOUND ERROR?');
+        console.log(err);
+      }
+
       return retryMain();
     }
     
