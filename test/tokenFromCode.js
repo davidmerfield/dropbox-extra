@@ -8,7 +8,14 @@ describe("tokenFromCode", function() {
 
       expect(err).toBe(null);
       expect(token).toEqual(jasmine.any(String));
-      done();
+
+      var dropbox = new Dropbox(token);
+
+      dropbox.readdir('', function(err){
+    
+        expect(err).toBe(null);  
+        done();
+      });
     });    
   });
 });
